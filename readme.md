@@ -3,6 +3,9 @@
 - Please download expo app first.
 
 ## Installation
+### Clone 
+- Clone this repo to your local machine using `https://github.com/jackChauT/CT_ClinicApps`
+### Setup
 1. Download and Install Nodejs
 `https://nodejs.org/en/download/`
 2. Install Expo
