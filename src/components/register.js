@@ -13,12 +13,12 @@ class Register extends ValidationComponent {
         super(props);
         
         this.state = {
-          email: 'a@a.com',
-          password: '12345678',
-          password2: '12345678',
-          clinic: 'a',
-          phone:'12345678',
-          address:'a'
+          email: '',
+          password: '',
+          password2: '',
+          clinic: '',
+          phone:'',
+          address:''
         };
       }
 
