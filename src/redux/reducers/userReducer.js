@@ -12,7 +12,7 @@ const initialState = {
 const userReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOGOUT_REQUEST:
-            return {...state, user: {}, auth: {}, errMessage: {}}
+            return {...state, user: {}, auth: {}, errMessage: ''}
         case REGISTER_REQUEST:
         case LOGIN_REQUEST:
             return {...state, isFetching: true}

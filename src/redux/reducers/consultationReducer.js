@@ -15,11 +15,11 @@ const consultationReducer = (state = initialState, action) => {
         case CONSULTATION_FAILURE:
             return {...state, isFetching: false, errMessage: action.payload}
         case CONSULTATION_SUCCESS:
-            return {...state, isFetching: false, records: action.payload}
+            return {...state, isFetching: false, records: action.payload, errMessage: ''}
         case CONSULTATION_DETAIL_SUCCESS:
-            return {...state, isFetching: false, detail: action.payload}
+            return {...state, isFetching: false, detail: action.payload, errMessage: ''}
         case CONSULTATION_DETAIL_EMPTY:
-            return {...state, isFetching: true, detail: {}}
+            return {...state, isFetching: true, detail: {}, errMessage: ''}
         default:
             return state;
     }

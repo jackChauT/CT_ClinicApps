@@ -1,5 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { Component } from 'react';
+import React from 'react';
 import { Alert, Text, TextInput, Button, View, StyleSheet } from 'react-native';
 import ValidationComponent from 'react-native-form-validator';
 import common from '../styles/common';
@@ -12,8 +11,8 @@ class Login extends ValidationComponent {
   constructor(props) {
     super(props);
     this.state = {
-      email: 'a@a.com',
-      password: '12345678'
+      email: '',
+      password: ''
     };
   }
   
@@ -30,10 +29,8 @@ class Login extends ValidationComponent {
 
     if (this.isFormValid()) {
       this.props.fetchLogin({email:email, password:password}).then(r => {
-        console.log(r)
         this.props.navigation.navigate('Home')
-      }).catch(err => {
-        console.log(err)
+      }).catch(() => {
         Alert.alert("Login Failed", this.props.user.errMessage.toString());    
       })
     }

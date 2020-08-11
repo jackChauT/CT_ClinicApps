@@ -20,13 +20,12 @@ export const fetchingConsultationDetailSuccess = (json) => ({
     payload: json
 })
 
-export const emptyConsultationDetailRequest = (json) => ({
+export const emptyConsultationDetailRequest = () => ({
     type: CONSULTATION_DETAIL_EMPTY,
-    payload: json
 })
 
-export const fetchConsultationSimpleRecords = (data, token) => {
-    return async dispatch => {
+export const fetchConsultationSimpleRecords = (data) => {
+    return async (dispatch, getState) => {
         dispatch(fetchingConsultationRequest());
         try {
             let response = await fetch(
@@ -34,7 +33,7 @@ export const fetchConsultationSimpleRecords = (data, token) => {
                 ,{ 
                     method: 'GET',
                     headers:{
-                        Authorization: `Bearer ${token}`
+                        Authorization: `Bearer ${getState().userReducer.auth.accessToken}`
                     }
                 })
             let json = await response.json()
@@ -49,16 +48,17 @@ export const fetchConsultationSimpleRecords = (data, token) => {
     }
 }
 
-export const fetchConsultationDetail = (data, token) => {
-    return async dispatch => {
+export const fetchConsultationDetail = (data) => {
+    return async (dispatch, getState) => {
         dispatch(fetchingConsultationRequest());
         try {
+
             let response = await fetch(
                 `${HOST + CONSULTATION_DETAIL_API}/${data.id}`
                 ,{ 
                     method: 'GET', 
                     headers:{
-                        Authorization: `Bearer ${token}`
+                        Authorization: `Bearer ${getState().userReducer.auth.accessToken}`
                     }
                 })
             let json = await response.json()
@@ -73,8 +73,4 @@ export const fetchConsultationDetail = (data, token) => {
     }
 }
 
-export const emptyConsultationDetail = () => {
-    return dispatch => {
-        dispatch(emptyConsultationDetailRequest());
-    }
-}
+export const emptyConsultationDetail = () => (dispatch) => dispatch(emptyConsultationDetailRequest())

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, StyleSheet, Text, View, TouchableOpacity, ActivityIndicator} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
 import {Agenda} from 'react-native-calendars';
 
 import { fetchConsultationSimpleRecords } from '../../redux/actions/consultationActions';
@@ -49,7 +49,6 @@ class AgendaScreen extends Component {
         currentDateString: dateString
       })
       if (this.isNotContainCurrentMonth(date) && !this.state.refreshing) {
-        console.log(`Get - ${date.month}`)
         await this.props.fetchConsultationSimpleRecords({
           clinic: this.props.user.clinic,
           start: moment(dateString).startOf('month').format('YYYY-MM-DD 00:00:00'),
@@ -63,7 +62,11 @@ class AgendaScreen extends Component {
   }
 
   componentDidUpdate(preProp) {
-    
+    if (preProp.consultation.errMessage != this.props.consultation.errMessage
+      && this.props.consultation.errMessage != '') {
+      Alert.alert("Agenda Fail", this.props.consultation.errMessage.toString())
+    }
+
     if (Object.keys(this.props.user).length == 0) {
       this.props.navigation.navigate('Login')
     }

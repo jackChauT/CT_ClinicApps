@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Text, SafeAreaView, ScrollView, View, StyleSheet, ActivityIndicator } from 'react-native';
+import { Text, SafeAreaView, ScrollView, View, StyleSheet, ActivityIndicator, Alert } from 'react-native';
 
 import common from '../../styles/common';
 
@@ -11,20 +11,31 @@ import moment from 'moment';
 class Detail extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+          isRefreshing: true,
+        }
     }
 
     componentDidMount() {
-        this.props.fetchConsultationDetail({
-            id: this.props.route.params.id,
-        }, this.props.auth.accessToken)
+      this.props.fetchConsultationDetail({
+          id: this.props.route.params.id,
+      })
     }
 
-    componentWillUnmount() {
-        this.props.emptyConsultationDetail()
+    componentDidUpdate(preProp) {
+      if (preProp.isFetching != this.props.isFetching && !this.props.isFetching) {
+        this.setState({
+          isRefreshing: false
+        })
+      }
+      if (preProp.consultation.errMessage != this.props.consultation.errMessage
+        && this.props.consultation.errMessage != '') {
+        Alert.alert("Agenda Fail", this.props.consultation.errMessage.toString())
+      }
     }
 
     render() {
-        if (this.props.isFetching) {
+        if (this.state.isRefreshing) {
             return (<View style={common.container}><ActivityIndicator size="large"/></View>)
         } else {
             return (
@@ -74,6 +85,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
     return {
         detail: state.consultationReducer.detail,
+        consultation: state.consultationReducer,
         isFetching: state.consultationReducer.isFetching,
         auth: state.userReducer.auth
     };

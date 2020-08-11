@@ -49,13 +49,6 @@ export const fetchingRefreshTokenFailure = (error) => ({
     payload: error
 })
 
-function addTodo(text) {
-    return {
-      type: ADD_TODO,
-      text
-    }
-  }
-
 export const fetchLogout = (data) => {
 
     return dispatch => {
@@ -68,7 +61,7 @@ export const fetchLogout = (data) => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
-            }).then(response => {
+            }).then(() => {
                 return Promise.resolve()
             }).catch(err => {
                 return Promise.reject(err);
@@ -93,7 +86,7 @@ export const fetchLogin = (data) => {
             .then(json => {
                 if (json.error) {
                     dispatch(fetchingLoginFailure(json.error.message));
-                    return Promise.reject(json.error);
+                    return Promise.reject(json.error.message);
                 }
                 dispatch(fetchingLoginSuccess(json));
                 return Promise.resolve(json)
@@ -105,36 +98,65 @@ export const fetchLogin = (data) => {
     }
 }
 
+
 export const fetchRegister = (data) => {
-    return async dispatch => {
-        dispatch(fetchingRegisterRequest());
-        try {
-            let response = await fetch(
-                HOST + REGISTER_API,{
-                    method: 'POST',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                })
-            let json = await response.json()
-            if (json.error) {
-                dispatch(fetchingRegisterFailure(json.error.message));
-                return false
-            } else {
-                dispatch(fetchingRegisterSuccess(json));
-                return true
-            }
-        } catch (err) {
-            dispatch(fetchingRegisterFailure(err));
-            return err
-        }
-    }
+  return dispatch => {
+      dispatch(fetchingRegisterRequest());
+      return fetch(
+          HOST + REGISTER_API,{
+              method: 'POST',
+              headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(data)
+          }).then(response => {
+              return response.json()
+          })
+          .then(json => {
+              if (json.error) {
+                  dispatch(fetchingRegisterFailure(json.error.message));
+                  return Promise.reject(json.error.message);
+              }
+              dispatch(fetchingRegisterSuccess(json));
+              return Promise.resolve(json)
+          })
+          .catch(err => {
+              dispatch(fetchingRegisterFailure(err));
+              return Promise.reject(err);
+          })
+  }
 }
 
+// export const fetchRegister = (data) => {
+//     return async dispatch => {
+//         dispatch(fetchingRegisterRequest());
+//         try {
+//             let response = await fetch(
+//                 HOST + REGISTER_API,{
+//                     method: 'POST',
+//                     headers: {
+//                         Accept: 'application/json',
+//                         'Content-Type': 'application/json'
+//                     },
+//                     body: JSON.stringify(data)
+//                 })
+//             let json = await response.json()
+//             if (json.error) {
+//                 dispatch(fetchingRegisterFailure(json.error.message));
+//                 return false
+//             } else {
+//                 dispatch(fetchingRegisterSuccess(json));
+//                 return true
+//             }
+//         } catch (err) {
+//             dispatch(fetchingRegisterFailure(err));
+//             return err
+//         }
+//     }
+// }
+
 export function refreshToken(dispatch, data) {
-    console.log("refreshToken")
     return fetch(
         HOST + REFRESHTOKEN_API,{
             method: 'POST',
@@ -157,8 +179,7 @@ export function refreshToken(dispatch, data) {
             }
         })
         .catch(err => {
-            console.log('error refreshing token', err);
-            dispatch(fetchingRefreshTokenFailure(json));
+            dispatch(fetchingRefreshTokenFailure(err));
             return Promise.reject(err);
         });
 }

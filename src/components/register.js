@@ -33,13 +33,12 @@ class Register extends ValidationComponent {
         });
 
         if (this.isFormValid()) {
-            let result = await this.props.fetchRegister(this.state)
-            if (result) {
-              this.props.navigation.navigate('Home')
-            } else {
-              Alert.alert("Register Failed", this.props.user.errMessage.toString());    
-            }
-          }
+          this.props.fetchRegister(this.state).then(() => {
+            this.props.navigation.navigate('Home')
+          }).catch(() => {
+            Alert.alert("Register Failed", this.props.user.errMessage.toString());    
+          })
+        }
     }
 
     removeTheField(message) {
