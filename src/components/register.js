@@ -33,7 +33,8 @@ class Register extends ValidationComponent {
         });
 
         if (this.isFormValid()) {
-          this.props.fetchRegister(this.state).then(() => {
+          const { email, password, clinic, phone, address } = this.state;
+          this.props.fetchRegister({ email, password, clinic, phone, address }).then(() => {
             this.props.navigation.navigate('Home')
           }).catch(() => {
             Alert.alert("Register Failed", this.props.user.errMessage.toString());    

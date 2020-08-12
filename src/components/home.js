@@ -15,22 +15,7 @@ class Home extends Component {
             AsyncStorage.setItem('isLogout', 'true').then(() => {
               this.props.navigation.dispatch(e.data.action)
             })
-            // Alert.alert(
-            // 'Logout',
-            // 'Are you sure to logout?',
-            // [
-            //     { text: "No", style: 'cancel', onPress: () => {} },
-            //     {
-            //         text: 'Yes',
-            //         onPress: () => {
-            //             AsyncStorage.setItem('isLogout', 'true').then(() => {
-            //                 this.props.navigation.dispatch(e.data.action)
-            //             })
-            //         }
-            //     },
-            // ]
-            // );
-        })
+        });
     }
 
     async onLogout() {

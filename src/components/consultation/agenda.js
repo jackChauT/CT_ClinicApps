@@ -18,6 +18,27 @@ class AgendaScreen extends Component {
     };
   }
 
+  componentDidUpdate(preProp) {
+    if (preProp.consultation.errMessage != this.props.consultation.errMessage
+      && this.props.consultation.errMessage != '') {
+      Alert.alert("Agenda Fail", this.props.consultation.errMessage.toString())
+    }
+
+    if (Object.keys(this.props.user).length == 0) {
+      this.props.navigation.navigate('Login')
+    }
+
+    let keysOfRecords = Object.keys(this.props.consultation.records) // e.g., 2020-09-09
+    if (preProp.consultation.records != this.props.consultation.records && keysOfRecords.length > 0) {
+      var newItems = {}
+      newItems[this.state.currentDateString] = []
+      keysOfRecords.forEach(key => {newItems[key] = this.props.consultation.records[key]});
+      this.setState({
+        items: newItems
+      })
+    }
+  }
+
   render() {
     return (
       <Agenda
@@ -59,27 +80,6 @@ class AgendaScreen extends Component {
           refreshing: true
         })
       }
-  }
-
-  componentDidUpdate(preProp) {
-    if (preProp.consultation.errMessage != this.props.consultation.errMessage
-      && this.props.consultation.errMessage != '') {
-      Alert.alert("Agenda Fail", this.props.consultation.errMessage.toString())
-    }
-
-    if (Object.keys(this.props.user).length == 0) {
-      this.props.navigation.navigate('Login')
-    }
-
-    let keysOfRecords = Object.keys(this.props.consultation.records) // e.g., 2020-09-09
-    if (preProp.consultation.records != this.props.consultation.records && keysOfRecords.length > 0) {
-      var newItems = {}
-      newItems[this.state.currentDateString] = []
-      keysOfRecords.forEach(key => {newItems[key] = this.props.consultation.records[key]});
-      this.setState({
-        items: newItems
-      })
-    }
   }
 
   renderItem(item) {
