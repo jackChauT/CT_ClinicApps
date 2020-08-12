@@ -28,7 +28,7 @@ class Register extends ValidationComponent {
             password: {minlength:8, required: true},
             password2: {minlength:8, required: true},
             clinic: {required: true},
-            phone: {numbers: true, required: true},
+            phone: {numbers: true, minlength:8, required: true},
             address: {required: true},
         });
 
