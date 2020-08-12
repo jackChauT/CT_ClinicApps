@@ -89,7 +89,7 @@ class Register extends ValidationComponent {
                     value={this.state.phone}
                     onChangeText={(phone) => this.setState({ phone })}
                     placeholder={'Phone Number'}
-                    keyboardType="number-pad"
+                    keyboardType="numeric"
                     style={this.isFieldInError('phone') ? common.inputError : common.input}
                 />
                 
